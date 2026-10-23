@@ -1,0 +1,4 @@
+/* TV1 — B0: route của ebooks chưa được đăng ký.
+ * Tuần 1 chốt router; cấu trúc dự kiến được ghi trong README.
+ */
+export const routes = [];
