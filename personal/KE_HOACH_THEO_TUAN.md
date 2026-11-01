@@ -1,3 +1,5 @@
+> BẢN LƯU CŨ — không dùng để giao việc. Xem README_TV3.md và kế hoạch chính thức được README gốc tham chiếu. Nội dung dưới giữ để đối chiếu lịch sử.
+
 # Kế hoạch theo tuần — Làm độc lập theo bản nền tuần trước
 
 ### Mốc thời gian áp dụng cho mọi tuần

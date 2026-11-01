@@ -1,4 +1,2 @@
-/* Phụ trách: TV3. Bản hiện tại: B0 — file khung, chưa triển khai.
- * Tuần 2: tra cứu, chi tiết, form sách/bản sách và danh mục. Tuần 4 bổ sung kiểm kê. Dùng API client chung khi B1 được bàn giao.
- */
-export {};
+// TV3: giao diện thử tuần 1; nghiệp vụ máy chủ triển khai tuần 3.
+export { mount } from './demo-ui.js';

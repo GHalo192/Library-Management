@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import {createStore,requestBorrow,review,handover,confirmFine} from './model.js';
+const s=createStore();
+assert.throws(()=>requestBorrow(s,1,[1,2,3,4]));assert.throws(()=>requestBorrow(s,1,[]));assert.throws(()=>requestBorrow(s,1,[1],false));
+requestBorrow(s,1,[1,2,3]);review(s,1,true);
+assert.equal(s.loans.length,0);assert.equal(s.copies.filter(c=>c.available).length,4);
+assert.throws(()=>handover(s,1,15));assert.throws(()=>handover(s,1,14,false));assert.equal(s.loans.length,0);
+handover(s,1,14);assert.equal(s.loans.length,1);assert.equal(s.loans[0].due,'2026-11-15');assert.equal(s.copies.filter(c=>c.available).length,1);
+assert.throws(()=>handover(s,1,14));
+const conflict=createStore();requestBorrow(conflict,1,[1]);requestBorrow(conflict,2,[1]);review(conflict,1,true);review(conflict,2,true);handover(conflict,1,1);
+assert.throws(()=>handover(conflict,2,1));assert.equal(conflict.loans.length,1);
+const limit=createStore();requestBorrow(limit,1,[1,2]);review(limit,1,true);limit.loans.push({readerId:1,copyIds:[8,9,10,11,12,13]});
+assert.throws(()=>handover(limit,1,14));assert.equal(limit.copies.filter(c=>c.available).length,4);
+const reject=createStore();requestBorrow(reject,1,[1]);review(reject,1,false);assert.throws(()=>handover(reject,1,14));
+confirmFine(s,1);assert.throws(()=>confirmFine(s,1));
+console.log('PASS TV3: limits, invalid card, approval without stock change, handover, duplicate/conflicting handover, rejection and fine confirmation.');
