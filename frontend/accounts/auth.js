@@ -18,6 +18,7 @@ export function renderAuth(view = "login") {
          <label class="field">Tên đăng nhập
            <input class="input" name="username" autocomplete="username" maxlength="24" required placeholder="4–24 ký tự, không dấu">
          </label>
+         <label class="field">MSSV<input class="input" name="mssv" required maxlength="32"></label>
          <label class="field">Họ tên
            <input class="input" name="name" autocomplete="name" maxlength="100" required>
          </label>
@@ -43,7 +44,7 @@ export function renderAuth(view = "login") {
        <form id="login-form" novalidate>
          <p class="auth-error" role="alert" hidden></p>
          <label class="field">Tên đăng nhập
-           <input class="input" name="username" autocomplete="username" required placeholder="Tên đăng nhập của bạn">
+           <input class="input" name="username" autocomplete="username" required placeholder="Email hoặc MSSV (demo cũ: student/admin)">
          </label>
          <label class="field">Mật khẩu
            <input class="input" type="password" name="password" autocomplete="current-password" required placeholder="Nhập mật khẩu">
@@ -66,16 +67,19 @@ export function renderAuth(view = "login") {
 
 export function validateRegistration(input, accounts) {
   const username = clean(input.username);
+  const mssv = clean(input.mssv);
   const name = clean(input.name);
   const email = clean(input.email);
   const phone = clean(input.phone);
   const password = String(input.password ?? "");
   const confirmPassword = String(input.confirmPassword ?? "");
 
-  if (!username || !name || !email || !phone || !password || !confirmPassword)
+  if (!mssv || !username || !name || !email || !phone || !password || !confirmPassword)
     return "Vui lòng nhập đầy đủ các trường bắt buộc.";
   if (!/^[A-Za-z0-9_.-]{4,24}$/.test(username))
     return "Tên đăng nhập phải có 4–24 ký tự, chỉ gồm chữ không dấu, số, dấu chấm, gạch ngang hoặc gạch dưới.";
+  if (!/^[A-Za-z0-9_-]{1,32}$/.test(mssv)) return "MSSV không hợp lệ.";
+  if (accounts.some(account => same(account.mssv, mssv))) return "MSSV đã được sử dụng.";
   if (name.length < 2 || name.length > 100)
     return "Họ tên phải có từ 2 đến 100 ký tự.";
   if (email.length > 150 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
@@ -127,6 +131,7 @@ export async function registerAccount(db, input) {
   const credential = await createCredential(password);
   const account = {
     id: clean(input.username),
+    mssv: clean(input.mssv),
     name: clean(input.name),
     email: clean(input.email),
     phone: clean(input.phone),
@@ -146,7 +151,7 @@ export async function registerAccount(db, input) {
 
 export async function authenticateAccount(db, username, password) {
   const accounts = db.read().accounts ?? [];
-  const account = accounts.find((item) => same(item.id, username));
+  const account = accounts.find((item) => same(item.id, username) || (item.email && same(item.email, username)) || (item.mssv && same(item.mssv, username)));
   if (!account || account.status !== "Hoạt động") return null;
   if (account.credential) {
     const hash = await passwordHash(
@@ -160,4 +165,14 @@ export async function authenticateAccount(db, username, password) {
     password === DEMO_PASSWORD
     ? account
     : null;
+}
+
+export async function changePassword(db, id, current, password, confirmation) {
+  if (!await authenticateAccount(db, id, current)) throw Error("Mật khẩu hiện tại không đúng hoặc tài khoản bị khóa.");
+  if (password.length < 8 || password !== confirmation) throw Error("Mật khẩu mới tối thiểu 8 ký tự và phải khớp nhập lại.");
+  const credential = await createCredential(password);
+  const data = db.read();
+  const account = data.accounts.find(a => a.id === id && a.status === "Hoạt động");
+  if (!account) throw Error("Tài khoản không còn hoạt động.");
+  account.credential = credential; db.write(data);
 }

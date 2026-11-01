@@ -1,4 +1,4 @@
-import { ROLE_LABELS } from "../core/routes.js";
+const ROLE_LABELS = { student: "Sinh viên", librarian: "Thủ thư", staff: "Nhân viên", admin: "Quản lý" };
 import { createCredential } from "./auth.js";
 
 const ROLES = ["student", "librarian", "staff", "admin"];
@@ -71,6 +71,9 @@ function accountForm(account) {
     <label class="field">Họ tên
       <input class="input" name="name" value="${value("name")}" maxlength="100" required>
     </label>
+    <label class="field">MSSV (bắt buộc nếu là sinh viên)
+      <input class="input" name="mssv" value="${value('mssv')}" maxlength="32">
+    </label>
     <label class="field">Email ${editing && !account.email ? "(có thể bổ sung sau)" : ""}
       <input class="input" type="email" name="email" value="${value("email")}" maxlength="150" ${!editing || account.email ? "required" : ""}>
     </label>
@@ -99,6 +102,7 @@ export function validateAccount(input, accounts, originalId = "") {
   const email = clean(input.email);
   const phone = clean(input.phone);
   const role = clean(input.role);
+  const mssv = clean(input.mssv);
   const status = clean(input.status);
   const password = String(input.password ?? "");
   const confirmPassword = String(input.confirmPassword ?? "");
@@ -124,6 +128,8 @@ export function validateAccount(input, accounts, originalId = "") {
   )
     return "Số điện thoại phải có dạng 0xxxxxxxxx hoặc +84xxxxxxxxx.";
   if (!ROLES.includes(role)) return "Vai trò không hợp lệ.";
+  if (role === 'student' && !/^[A-Za-z0-9_-]{1,32}$/.test(mssv)) return 'Sinh viên cần MSSV hợp lệ.';
+  if (mssv && accounts.some(a => a.id !== originalId && same(a.mssv, mssv))) return 'MSSV đã được sử dụng.';
   if (!STATUSES.includes(status)) return "Trạng thái không hợp lệ.";
   if (password && password.length < 8)
     return "Mật khẩu phải có ít nhất 8 ký tự.";
@@ -168,6 +174,7 @@ export async function saveAccount(db, input, originalId = "") {
     email: clean(input.email),
     phone: clean(input.phone),
     role: clean(input.role),
+    mssv: clean(input.mssv) || null,
     status: clean(input.status),
     ...(credential ? { credential } : {}),
   };
@@ -182,8 +189,8 @@ export async function saveAccount(db, input, originalId = "") {
   return account;
 }
 
-export function initAccounts({ db, modal, render, toast }) {
-  document.addEventListener("click", (event) => {
+export function initAccounts({ db, modal, render, toast, container = document, signal }) {
+  container.addEventListener("click", (event) => {
     const button = event.target.closest('[data-action^="account-"]');
     if (!button) return;
     if (button.dataset.action === "account-add") {
@@ -200,10 +207,10 @@ export function initAccounts({ db, modal, render, toast }) {
           accountForm(account),
         );
     }
-  });
+  }, { signal });
 
-  document.addEventListener("submit", async (event) => {
-    if (event.target.id !== "account-form") return;
+  container.addEventListener("submit", async (event) => {
+    if (event.target.getAttribute('id') !== "account-form") return;
     event.preventDefault();
     const form = event.target;
     const originalId = form.dataset.originalId;
@@ -215,16 +222,7 @@ export function initAccounts({ db, modal, render, toast }) {
     try {
       const account = await saveAccount(db, values, originalId);
       form.closest(".modal-backdrop")?.remove();
-      const currentId = localStorage.getItem("unilib_account_id") || "admin";
-      if (
-        originalId === currentId &&
-        (account.role !== "admin" || account.status !== "Hoạt động")
-      ) {
-        localStorage.removeItem("unilib_role");
-        localStorage.removeItem("unilib_account_id");
-        location.href = "../../index.html";
-        return;
-      }
+      if (signal?.aborted) return;
       render();
       toast("Đã lưu thông tin tài khoản.");
     } catch (error) {
@@ -232,5 +230,5 @@ export function initAccounts({ db, modal, render, toast }) {
       errorBox.hidden = false;
       submitButton.disabled = false;
     }
-  });
+  }, { signal });
 }

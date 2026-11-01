@@ -46,6 +46,7 @@ function validationError(employee, employees, originalCode) {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(employee.email)) return 'Email không đúng định dạng.';
   if (!/^(?:0\d{9}|\+84\d{9})$/.test(employee.phone)) return 'Số điện thoại phải có dạng 0xxxxxxxxx hoặc +84xxxxxxxxx.';
   if (employee.position.length < 2 || employee.position.length > 80) return 'Chức vụ phải có từ 2 đến 80 ký tự.';
+  if (!['Đang làm việc', 'Ngừng hoạt động'].includes(employee.status)) return 'Trạng thái không hợp lệ.';
   const others = employees.filter(item => item.code !== originalCode);
   if (others.some(item => item.code.toLowerCase() === employee.code.toLowerCase())) return 'Mã nhân viên đã tồn tại.';
   if (others.some(item => item.email.toLowerCase() === employee.email.toLowerCase())) return 'Email đã được sử dụng.';
@@ -53,8 +54,8 @@ function validationError(employee, employees, originalCode) {
   return '';
 }
 
-export function initEmployees({ db, toast, modal, render }) {
-  document.addEventListener('click', event => {
+export function initEmployees({ db, toast, modal, render, container = document, signal }) {
+  container.addEventListener('click', event => {
     const button = event.target.closest('[data-action^="employee-"]');
     if (!button) return;
     const action = button.dataset.action;
@@ -78,9 +79,9 @@ export function initEmployees({ db, toast, modal, render }) {
         toast('Cập nhật thất bại. Dữ liệu cũ được giữ nguyên.');
       }
     }
-  });
+  }, { signal });
 
-  document.addEventListener('submit', event => {
+  container.addEventListener('submit', event => {
     if (event.target.id !== 'employee-form') return;
     event.preventDefault();
     const form = event.target;
@@ -116,5 +117,5 @@ export function initEmployees({ db, toast, modal, render }) {
       errorBox.textContent = 'Cập nhật thất bại. Dữ liệu cũ được giữ nguyên.';
       errorBox.hidden = false;
     }
-  });
+  }, { signal });
 }
