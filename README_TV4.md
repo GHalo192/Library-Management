@@ -43,6 +43,16 @@ Chạy `node frontend/accounts/week1.test.mjs`: đã qua import module, đăng k
 
 Envelope data/error, CSRF cho ghi kể cả login/register theo nền. Lỗi 401/403 phiên/quyền, 404 thiếu ID, 409 email/MSSV/mã nhân viên trùng, 422 input. Ví dụ login `{ "identifier": "SV001", "password": "..." }`; không ghi mật khẩu vào log. Gọi refreshSession sau login/logout để nhận token mới. Không gọi ReaderService mới trong tuần 2; trạng thái chờ hồ sơ thể hiện qua chưa có bản ghi doc_gia, cần thống nhất nếu muốn cột trạng thái riêng.
 
+## Kiểm tra chéo và sửa tiếp — 02/11/2026, vẫn thuộc tuần 1
+
+- Đã rà soát mã và chạy lại ca kiểm tra thay nhóm theo yêu cầu người dùng.
+- Sửa lỗi thao tác đăng ký/lưu tài khoản/đổi mật khẩu đang băm mật khẩu vẫn ghi dữ liệu sau khi rời màn hình. Truyền AbortSignal vào thao tác và kiểm tra lại trước khi ghi.
+- Mỗi lượt hiển thị có tín hiệu hủy riêng; chuyển màn hình hoặc đóng dialog hủy thao tác đang chờ. Kết quả đăng nhập cũ không được ghi đè màn hình mới.
+- Không mount khi signal đã hủy; cleanup hủy cả listener và thao tác đang chờ, dọn dialog.
+- PASS test hủy giữa chừng: đăng ký, lưu tài khoản và đổi mật khẩu đều không đổi dữ liệu. PASS Edge desktop/mobile.
+- PASS thử router nền: trì hoãn băm mật khẩu, rời accounts-demo sang readers rồi cho hoàn tất băm; readers không bị đổi màn hình và tài khoản bị hủy không đăng nhập được.
+- Session/health của môi trường thử là fixture; không thay nghiệm thu Auth/PDO/CSRF tuần 2 và chưa merge main.
+
 ## Tuần 2 — chưa thực hiện
 
 Backend đăng nhập/đăng xuất, mật khẩu, tài khoản/nhân viên; dùng PDO/Auth/session B1. Nối API thật, loại adapter demo khỏi luồng sản phẩm và thử CSRF/quyền/khóa tài khoản.

@@ -153,7 +153,8 @@ export function validateAccount(input, accounts, originalId = "") {
   return "";
 }
 
-export async function saveAccount(db, input, originalId = "") {
+export async function saveAccount(db, input, originalId = "", signal) {
+  signal?.throwIfAborted();
   const first = db.read();
   const firstError = validateAccount(input, accountsOf(first), originalId);
   if (firstError) throw new Error(firstError);
@@ -161,6 +162,7 @@ export async function saveAccount(db, input, originalId = "") {
   const credential = input.password
     ? await createCredential(String(input.password))
     : undefined;
+  signal?.throwIfAborted();
   const data = db.read();
   const accounts = accountsOf(data);
   const error = validateAccount(input, accounts, originalId);
@@ -189,7 +191,7 @@ export async function saveAccount(db, input, originalId = "") {
   return account;
 }
 
-export function initAccounts({ db, modal, render, toast, container = document, signal }) {
+export function initAccounts({ db, modal, render, toast, container = document, signal, getOperationSignal = () => signal }) {
   container.addEventListener("click", (event) => {
     const button = event.target.closest('[data-action^="account-"]');
     if (!button) return;
@@ -213,6 +215,7 @@ export function initAccounts({ db, modal, render, toast, container = document, s
     if (event.target.getAttribute('id') !== "account-form") return;
     event.preventDefault();
     const form = event.target;
+    const operationSignal = getOperationSignal();
     const originalId = form.dataset.originalId;
     const values = Object.fromEntries(new FormData(form));
     const errorBox = form.querySelector(".account-error");
@@ -220,12 +223,14 @@ export function initAccounts({ db, modal, render, toast, container = document, s
     errorBox.hidden = true;
     submitButton.disabled = true;
     try {
-      const account = await saveAccount(db, values, originalId);
+      await saveAccount(db, values, originalId, operationSignal);
+      if (operationSignal?.aborted || !form.isConnected) return;
       form.closest(".modal-backdrop")?.remove();
       if (signal?.aborted) return;
       render();
       toast("Đã lưu thông tin tài khoản.");
     } catch (error) {
+      if (operationSignal?.aborted || !form.isConnected) return;
       errorBox.textContent = error.message || "Cập nhật tài khoản thất bại.";
       errorBox.hidden = false;
       submitButton.disabled = false;

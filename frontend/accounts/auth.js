@@ -122,13 +122,15 @@ export async function createCredential(password) {
   return { salt, hash: await passwordHash(salt, password) };
 }
 
-export async function registerAccount(db, input) {
+export async function registerAccount(db, input, signal) {
+  signal?.throwIfAborted();
   const data = db.read();
   const accounts = Array.isArray(data.accounts) ? data.accounts : [];
   const error = validateRegistration(input, accounts);
   if (error) throw new Error(error);
   const password = String(input.password);
   const credential = await createCredential(password);
+  signal?.throwIfAborted();
   const account = {
     id: clean(input.username),
     mssv: clean(input.mssv),
@@ -167,10 +169,12 @@ export async function authenticateAccount(db, username, password) {
     : null;
 }
 
-export async function changePassword(db, id, current, password, confirmation) {
+export async function changePassword(db, id, current, password, confirmation, signal) {
+  signal?.throwIfAborted();
   if (!await authenticateAccount(db, id, current)) throw Error("Mật khẩu hiện tại không đúng hoặc tài khoản bị khóa.");
   if (password.length < 8 || password !== confirmation) throw Error("Mật khẩu mới tối thiểu 8 ký tự và phải khớp nhập lại.");
   const credential = await createCredential(password);
+  signal?.throwIfAborted();
   const data = db.read();
   const account = data.accounts.find(a => a.id === id && a.status === "Hoạt động");
   if (!account) throw Error("Tài khoản không còn hoạt động.");
