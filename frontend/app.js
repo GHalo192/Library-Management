@@ -3,12 +3,10 @@ import { mountLayout, updateMenu, setPageTitle } from './shared/layout.js';
 import { refreshSession, canAccess } from './shared/session.js';
 import { showState, toast } from './shared/ui.js';
 import { mount as mountHome } from './shared/home.js';
-import { routes as bookRoutes } from './books/routes.js';
-import { routes as ebookRoutes } from './ebooks/routes.js';
-import { routes as weekOneRoutes } from './week1/routes.js';
+import { routes as appRoutes } from './shared/app-routes.js';
 import { mountLogin } from './accounts/login.js';
 import { demoUser, clearDemoUser } from './accounts/demo-store.js';
-const routes = [{ path: '/', title: 'Tổng quan', icon: '◫', mount: mountHome }, ...bookRoutes, ...ebookRoutes, ...weekOneRoutes];
+const routes = [{ path: '/', title: 'Tổng quan', icon: '◫', mount: mountHome }, ...appRoutes];
 const root = document.getElementById('app');
 let activeController, cleanup, shellMounted = false;
 async function navigate() {
@@ -35,6 +33,7 @@ async function navigate() {
   document.getElementById('session-label').textContent = demoUser().name + ' (mẫu)';
   const container = document.getElementById('app-content');
   let path = location.hash.slice(1) || '/';
+  if (path.startsWith('/week1/')) { path = path.replace('/week1/', '/'); history.replaceState(null, '', '#' + path); }
   if (path === '/login') { path = '/'; history.replaceState(null, '', '#/'); }
   let params = {}, selected;
   for (const route of routes) {

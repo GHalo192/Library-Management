@@ -1,4 +1,3 @@
-// Phiên giao diện B1 chỉ trong bộ nhớ; không thay session hoặc quyền API máy chủ.
 let data = { accounts: ['student', 'librarian', 'staff', 'admin'].map(role => ({
   id: role, name: role, email: `${role}@example.test`,
   mssv: role === 'student' ? 'SV001' : null, role, status: 'Hoạt động',

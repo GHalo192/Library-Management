@@ -1,4 +1,4 @@
-/* Chỉ áp dụng cho nội dung mẫu B1 trong shell, không thay CSS prototype. */
+/* Bố cục nội dung ứng dụng. */
 #app-content nav { display: flex; flex-wrap: wrap; gap: 8px; }
 #app-content .panel { margin-top: 20px; }
 #app-content input, #app-content select { max-width: 100%; }

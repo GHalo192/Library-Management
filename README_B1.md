@@ -16,13 +16,13 @@ Máy đang được chuẩn bị trong lần bàn giao này đã có bản chạ
 
 ## Cách thử
 
-1. Mở trang sẽ hiện đăng nhập trước. Dùng admin / 123456 (hoặc tài khoản mẫu khác), sau đó vào Tổng quan: Máy chủ và Cơ sở dữ liệu đều “đã kết nối”, dùng PHP/DB thật.
-2. Menu **Thử độc giả / thẻ**: tìm, thêm/sửa hồ sơ và cấp/gia hạn/khóa thẻ mẫu.
-3. **Thử mượn / bàn giao**: chọn bản sách, gửi → duyệt → bàn giao. Duyệt chưa giảm tồn hoặc tạo phiếu.
-4. **Thử khoản phạt**: xác nhận khoản mẫu; chưa phải thu tiền.
-5. **Thử tài khoản / nhân viên**: dùng tài khoản vừa đăng nhập để thử quản lý tài khoản/nhân viên; tài khoản student có thể thử đổi mật khẩu; hoặc đăng ký với email/MSSV mới.
+1. Mở trang sẽ hiện đăng nhập trước. Dùng admin / 123456 (hoặc tài khoản mẫu khác), sau đó vào Tổng quan với các liên kết truy cập nhanh.
+2. Menu **Độc giả / thẻ**: tìm, thêm/sửa hồ sơ và cấp/gia hạn/khóa thẻ mẫu.
+3. **Mượn / bàn giao**: chọn bản sách, gửi → duyệt → bàn giao. Duyệt chưa giảm tồn hoặc tạo phiếu.
+4. **Khoản phạt**: xác nhận khoản mẫu; chưa phải thu tiền.
+5. **Tài khoản / nhân viên**: dùng tài khoản vừa đăng nhập để thử quản lý tài khoản/nhân viên; tài khoản student có thể thử đổi mật khẩu; hoặc đăng ký với email/MSSV mới.
 
-Menu /week1/* là vùng thử dữ liệu trong bộ nhớ. Reload đặt lại dữ liệu; đăng nhập mẫu không đổi phiên máy chủ và không cấp quyền API. Nhãn tài khoản trên giao diện ghi rõ (mẫu), không đại diện cho quyền API máy chủ. Các routes có quyền của sản phẩm chỉ được nối khi backend thật được triển khai ở tuần 2. Không dùng fixture làm cơ sở dữ liệu giao dịch thật.
+Các trang /readers, /loans, /fines và /accounts dùng dữ liệu trong bộ nhớ. Đường dẫn /week1/* cũ được chuyển sang đường dẫn mới. Reload đặt lại dữ liệu; đăng nhập mẫu không đổi phiên máy chủ và không cấp quyền API. Nhãn tài khoản trên giao diện ghi rõ (mẫu), không đại diện cho quyền API máy chủ. Các routes có quyền của sản phẩm chỉ được nối khi backend thật được triển khai ở tuần 2. Không dùng fixture làm cơ sở dữ liệu giao dịch thật.
 
 ## Cài/nâng cấp thủ công
 
@@ -72,3 +72,6 @@ Giữ nguyên quy tắc chỉ dùng đầu ra người khác đã chốt trướ
 Ứng dụng mở bằng màn hình đăng nhập toàn trang, chỉ dựng menu sau khi đăng nhập mẫu thành công. Tài khoản mẫu được dùng chung giữa màn hình đầu và module tài khoản, không yêu cầu đăng nhập lần hai. Đăng xuất quay về đăng nhập; truy cập hash nội bộ khi chưa đăng nhập cũng quay về đăng nhập. Reload làm mất phiên mẫu trong bộ nhớ và yêu cầu đăng nhập lại. Đăng ký từ trang đầu có thể dùng ngay trong lượt chạy đó.
 
 Đã kiểm tra mật khẩu sai/đúng, không có sidebar trước đăng nhập, chuyển trang sau đăng nhập, đăng xuất, đường dẫn nội bộ và reload trên Edge, cùng các thao tác B1. Đây vẫn là đăng nhập mô phỏng tuần 1; backend login/session nghiệp vụ thuộc tuần 2. Tag base-w1 giữ nguyên bản nghiệm thu ban đầu, cập nhật giao diện nằm trong commit tiếp theo trên main.
+## Dọn giao diện — 02/11/2026
+
+Đã bỏ liên kết prototype, trang khung chưa hoạt động và bảng kiểm tra kết nối khỏi bản web. Các đường dẫn HTML cũ không còn được phục vụ. Menu chỉ giữ Tổng quan, Độc giả/thẻ, Mượn/bàn giao, Khoản phạt và Tài khoản/nhân viên. Giao diện không còn nhãn tuần hoặc chú thích tiến độ; vẫn thông báo dữ liệu chạy thử sẽ đặt lại khi tải lại trang. Mã nguồn tạm ngưng và tài liệu lịch sử được giữ để phát triển tiếp.

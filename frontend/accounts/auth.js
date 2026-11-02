@@ -1,4 +1,3 @@
-// Xác thực mẫu cho B1. Backend phải tự xác thực lại khi được tích hợp.
 const DEMO_PASSWORD = "123456";
 const encoder = new TextEncoder();
 
@@ -37,14 +36,14 @@ export function renderAuth(view = "login") {
          <button class="btn auth-submit" type="submit">Tạo tài khoản</button>
        </form>
        <p class="auth-switch">Đã có tài khoản? <a href="#login" data-action="show-login">Đăng nhập</a></p>
-       <p class="auth-note">Bản demo chỉ tạo tài khoản sinh viên; hồ sơ độc giả được bổ sung ở module riêng.</p>`
+       <p class="auth-note">Đăng ký dành cho sinh viên.</p>`
     : `<div class="eyebrow">WELCOME BACK</div>
        <h2>Đăng nhập UniLib</h2>
        <p class="sub">Truy cập không gian học tập của bạn</p>
        <form id="login-form" novalidate>
          <p class="auth-error" role="alert" hidden></p>
          <label class="field">Tên đăng nhập
-           <input class="input" name="username" autocomplete="username" required placeholder="Email hoặc MSSV (demo cũ: student/admin)">
+           <input class="input" name="username" autocomplete="username" required placeholder="Email, MSSV hoặc tên đăng nhập">
          </label>
          <label class="field">Mật khẩu
            <input class="input" type="password" name="password" autocomplete="current-password" required placeholder="Nhập mật khẩu">
@@ -52,7 +51,7 @@ export function renderAuth(view = "login") {
          <button class="btn auth-submit" type="submit">Đăng nhập →</button>
        </form>
        <p class="auth-switch">Chưa có tài khoản sinh viên? <a href="#register" data-action="show-register">Đăng ký</a></p>
-       <p class="demo">Tài khoản demo: <b>student, librarian, staff, admin</b><br>Mật khẩu: <b>123456</b><br>⚠️ Chỉ là đăng nhập mô phỏng trên trình duyệt.</p>`;
+       <p class="demo">Tài khoản chạy thử: <b>student, librarian, staff, admin</b><br>Mật khẩu: <b>123456</b><br>Dữ liệu chạy thử được đặt lại khi tải lại trang.</p>`;
 
   return `<div class="login-wrap">
     <div class="login-art"><div>

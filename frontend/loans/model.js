@@ -1,5 +1,4 @@
-// TV3 tuần 1: mô phỏng trạng thái trong bộ nhớ, backend tuần 3 mới quyết định giao dịch thật.
-export function createStore() { return { copies: [1,2,3,4].map(id => ({ id, title: `Bản sách ${id}`, available: true })), requests: [], loans: [], fines: [{ id: 1, amount: 12000, status: 'pending', reason: 'Mẫu 2 cuốn × 3 ngày × 2.000đ; chưa phải bộ tính tuần 2' }], nextRequest: 1 }; }
+export function createStore() { return { copies: [1,2,3,4].map(id => ({ id, title: `Bản sách ${id}`, available: true })), requests: [], loans: [], fines: [{ id: 1, amount: 12000, status: 'pending', reason: 'Quá hạn 2 cuốn × 3 ngày × 2.000đ' }], nextRequest: 1 }; }
 export function requestBorrow(store, reader, copies, cardValid = true) {
   if (!Array.isArray(copies)) throw Error('Danh sách bản sách không hợp lệ.');
   const readerId = Number(reader), ids = copies.map(Number);

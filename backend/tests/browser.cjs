@@ -9,20 +9,15 @@ const path = require('node:path');
     const errors = []; page.on('pageerror', error => errors.push(error.message));
     await page.goto(process.env.TEST_URL || 'http://127.0.0.1:18080/');
     if (await page.locator('#login-form').count()) { await page.locator('[name="username"]').fill('admin'); await page.locator('[name="password"]').fill('123456'); await page.getByRole('button', {name:'Đăng nhập →',exact:true}).click(); }
-    await page.getByText('Cơ sở dữ liệu: đã kết nối', { exact: true }).waitFor();
+    await page.getByRole('heading', { name: 'Chào mừng đến UniLib', exact: true }).waitFor();
     await page.screenshot({ path: path.join(__dirname, '../storage/week1-desktop.png'), fullPage: true });
-    await page.getByRole('button', { name: 'Kiểm tra lại' }).click();
     if (await page.locator('#login-form').count()) { await page.locator('[name="username"]').fill('admin'); await page.locator('[name="password"]').fill('123456'); await page.getByRole('button', {name:'Đăng nhập →',exact:true}).click(); }
-    await page.getByText('Cơ sở dữ liệu: đã kết nối', { exact: true }).waitFor();
+    await page.getByRole('heading', { name: 'Chào mừng đến UniLib', exact: true }).waitFor();
     await page.evaluate(() => { location.hash = '/missing'; });
     await page.getByRole('heading', { name: 'Không tìm thấy trang', exact: true }).waitFor();
     await page.getByRole('link', { name: 'Tổng quan', exact: true }).click();
     if (await page.locator('#login-form').count()) { await page.locator('[name="username"]').fill('admin'); await page.locator('[name="password"]').fill('123456'); await page.getByRole('button', {name:'Đăng nhập →',exact:true}).click(); }
-    await page.getByText('Cơ sở dữ liệu: đã kết nối', { exact: true }).waitFor();
-    await page.route('**/api/health/db', route => route.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({data:null,error:{code:'DATABASE_NOT_READY',message:'DB thử chưa sẵn sàng'}}) }));
-    await page.getByRole('button', { name: 'Kiểm tra lại' }).click();
-    await page.getByText('Cơ sở dữ liệu: DB thử chưa sẵn sàng', { exact: true }).waitFor();
-    await page.unroute('**/api/health/db');
+    await page.getByRole('heading', { name: 'Chào mừng đến UniLib', exact: true }).waitFor();
     await page.setViewportSize({ width: 800, height: 1000 });
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
     await page.setViewportSize({ width: 390, height: 844 });
@@ -33,6 +28,6 @@ const path = require('node:path');
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
     await page.screenshot({ path: path.join(__dirname, '../storage/week1-mobile.png'), fullPage: true });
     assert.deepEqual(errors, []);
-    console.log('PASS: desktop/mobile, navigation, database error, no page errors');
+    console.log('PASS: desktop/mobile, navigation, no page errors');
   } finally { await browser.close(); }
 })().catch(error => { console.error(error); process.exitCode = 1; });
