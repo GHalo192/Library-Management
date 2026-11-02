@@ -1,7 +1,7 @@
-const ROLE_LABELS = { student: "Sinh viên", librarian: "Thủ thư", staff: "Nhân viên", admin: "Quản lý" };
+const ROLE_LABELS = { user: "User", librarian: "Nhân viên thư viện", admin: "Admin" };
 import { createCredential } from "./auth.js";
 
-const ROLES = ["student", "librarian", "staff", "admin"];
+const ROLES = ['user', 'librarian', 'admin'];
 const STATUSES = ["Hoạt động", "Khóa"];
 const clean = (value) => String(value ?? "").trim();
 const same = (a, b) =>
@@ -128,7 +128,7 @@ export function validateAccount(input, accounts, originalId = "") {
   )
     return "Số điện thoại phải có dạng 0xxxxxxxxx hoặc +84xxxxxxxxx.";
   if (!ROLES.includes(role)) return "Vai trò không hợp lệ.";
-  if (role === 'student' && !/^[A-Za-z0-9_-]{1,32}$/.test(mssv)) return 'Sinh viên cần MSSV hợp lệ.';
+  if (role === 'user' && !/^[A-Za-z0-9_-]{1,32}$/.test(mssv)) return 'User cần MSSV hợp lệ.';
   if (mssv && accounts.some(a => a.id !== originalId && same(a.mssv, mssv))) return 'MSSV đã được sử dụng.';
   if (!STATUSES.includes(status)) return "Trạng thái không hợp lệ.";
   if (password && password.length < 8)

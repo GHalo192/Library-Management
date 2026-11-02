@@ -50,6 +50,8 @@ if ($databaseExists -eq '0') {
 $env:DB_HOST='127.0.0.1'; $env:DB_PORT=[string]$DbPort; $env:DB_NAME=$dbName; $env:DB_USER='root'; $env:DB_PASSWORD=''; $env:SESSION_SECURE='0'
 & $php (Join-Path $projectRoot 'database/migrations/001_b1.php')
 if ($LASTEXITCODE -ne 0) { throw 'Migration B1 thất bại.' }
+& $php (Join-Path $projectRoot 'database/migrations/002_three_roles.php')
+if ($LASTEXITCODE -ne 0) { throw 'Migration vai trò thất bại.' }
 $webListener=Get-NetTCPConnection -State Listen -LocalPort $WebPort -ErrorAction SilentlyContinue
 if (-not $webListener) {
   Start-Process -FilePath $php -ArgumentList @('-S',"127.0.0.1:$WebPort",'-t', (Join-Path $projectRoot 'frontend'), (Join-Path $projectRoot 'backend/dev-router.php')) -WorkingDirectory $projectRoot -WindowStyle Hidden -RedirectStandardOutput (Join-Path $storage "php-$WebPort.stdout.log") -RedirectStandardError (Join-Path $storage "php-$WebPort.stderr.log") | Out-Null

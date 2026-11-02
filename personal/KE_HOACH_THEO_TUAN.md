@@ -1,3 +1,5 @@
+> **Cập nhật vai trò 02/11/2026:** hệ thống dùng 3 loại: User (`user`), Nhân viên thư viện (`librarian`), Admin (`admin`). Gộp Thủ thư/Nhân viên vào Nhân viên thư viện; tài khoản tự đăng ký luôn là User. Quy định này thay thế các đoạn nói về 4 vai trò trong tài liệu lịch sử bên dưới.
+
 > BẢN LƯU CŨ — không dùng để giao việc. Xem README_TV3.md và kế hoạch chính thức được README gốc tham chiếu. Nội dung dưới giữ để đối chiếu lịch sử.
 
 # Kế hoạch theo tuần — Làm độc lập theo bản nền tuần trước

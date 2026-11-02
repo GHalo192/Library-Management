@@ -1,3 +1,5 @@
+> **Cập nhật vai trò 02/11/2026:** hệ thống dùng 3 loại: User (`user`), Nhân viên thư viện (`librarian`), Admin (`admin`). Gộp Thủ thư/Nhân viên vào Nhân viên thư viện; tài khoản tự đăng ký luôn là User. Quy định này thay thế các đoạn nói về 4 vai trò trong tài liệu lịch sử bên dưới.
+
 # Chính sách triển khai đã chốt — B1, 02/11/2026
 
 Người dùng đã giao chốt các điểm đang mở và tích hợp bản chung. Các lựa chọn dưới là **quyết định triển khai của đồ án**, không khẳng định là quy định được trích từ tài liệu nghiệp vụ cũ. Giữ các giới hạn BR đã xác nhận: 3 cuốn/lần, 7 đang mượn, 14 ngày, gia hạn tối đa 2 lần × 7 ngày, quá hạn tối đa 1 ngày được xét, 2.000đ/cuốn/ngày; eBook 3 cuốn/lần và 14 ngày.

@@ -75,3 +75,9 @@ Giữ nguyên quy tắc chỉ dùng đầu ra người khác đã chốt trướ
 ## Dọn giao diện — 02/11/2026
 
 Đã bỏ liên kết prototype, trang khung chưa hoạt động và bảng kiểm tra kết nối khỏi bản web. Các đường dẫn HTML cũ không còn được phục vụ. Menu chỉ giữ Tổng quan, Độc giả/thẻ, Mượn/bàn giao, Khoản phạt và Tài khoản/nhân viên. Giao diện không còn nhãn tuần hoặc chú thích tiến độ; vẫn thông báo dữ liệu chạy thử sẽ đặt lại khi tải lại trang. Mã nguồn tạm ngưng và tài liệu lịch sử được giữ để phát triển tiếp.
+
+## Ba loại tài khoản — 02/11/2026
+
+User (`user`), Nhân viên thư viện (`librarian`), Admin (`admin`). Tài khoản chạy thử tương ứng: user / librarian / admin, mật khẩu 123456. Tự đăng ký luôn là User; chỉ Admin quản lý tài khoản và nhân viên. Giữ MSSV cho User theo phạm vi thư viện sinh viên. Phân quyền nghiệp vụ phía máy chủ vẫn cần triển khai cùng API thật.
+
+Nâng cấp dữ liệu cũ: chạy `php database/migrations/002_three_roles.php` sau migration 001. Chuyển student thành user, staff thành librarian; giữ nguyên ID và dữ liệu liên kết. START_B1.ps1 tự chạy cả hai migration.

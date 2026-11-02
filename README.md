@@ -1,3 +1,5 @@
+> **Cập nhật vai trò 02/11/2026:** hệ thống dùng 3 loại: User (`user`), Nhân viên thư viện (`librarian`), Admin (`admin`). Gộp Thủ thư/Nhân viên vào Nhân viên thư viện; tài khoản tự đăng ký luôn là User. Quy định này thay thế các đoạn nói về 4 vai trò trong tài liệu lịch sử bên dưới.
+
 # Quản lý thư viện — Tổng quan hệ thống và phân công thành viên
 
 Bản phân công cho nhóm 4 người, triển khai quản lý thư viện và tìm/đọc sách điện tử bằng HTML/CSS/JavaScript, PHP, MySQL. Repository dùng main và tv1–tv4. Đã hoàn thiện phần nền TV1 trước tuần 1 và tuần 1: khung UniLib, API nền, PDO, phiên/quyền, schema/seed và kiểm tra. Prototype vẫn dùng dữ liệu mô phỏng. Đã nhận và tích hợp đầu ra tuần 1 TV2–TV4; chính sách được chốt trong CHINH_SACH_B1.md. B1 toàn nhóm đã qua kiểm tra theo README_B1.md. Xem mục 10 để chạy và tích hợp.

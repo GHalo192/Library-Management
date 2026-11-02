@@ -6,7 +6,7 @@ CREATE TABLE tai_khoan (
  email VARCHAR(191) NOT NULL UNIQUE,
  mssv VARCHAR(32) NULL UNIQUE,
  mat_khau_hash VARCHAR(255) NOT NULL,
- vai_tro ENUM('student','librarian','staff','admin') NOT NULL,
+ vai_tro ENUM('user','librarian','admin') NOT NULL,
  trang_thai ENUM('active','locked') NOT NULL DEFAULT 'active',
  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
