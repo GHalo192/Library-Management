@@ -1,12 +1,12 @@
 // TV1: router hash; mount nhận signal và có thể trả cleanup đồng bộ/bất đồng bộ.
 import { mountLayout, updateMenu, setPageTitle } from './shared/layout.js';
-import { refreshSession, canAccess } from './shared/session.js';
+import { refreshSession } from './shared/session.js';
 import { showState, toast } from './shared/ui.js';
 import { mount as mountHome } from './shared/home.js';
-import { routes as appRoutes } from './shared/app-routes.js';
+import { routesFor } from './shared/app-routes.js';
 import { mountLogin } from './accounts/login.js?v=registration-2';
 import { demoUser, clearDemoUser } from './accounts/demo-store.js';
-const routes = [{ path: '/', title: 'Tổng quan', icon: '◫', mount: mountHome }, ...appRoutes];
+const canAccess = (roles = []) => Boolean(demoUser() && (!roles.length || roles.includes(demoUser().role)));
 const root = document.getElementById('app');
 let activeController, cleanup, shellMounted = false;
 async function navigate() {
@@ -22,6 +22,7 @@ async function navigate() {
     } });
     return;
   }
+  const routes = [{ path: '/', title: 'Tổng quan', icon: '◫', mount: mountHome }, ...routesFor(demoUser().role)];
   if (!shellMounted) {
     root.className = '';
     mountLayout(root); shellMounted = true;
@@ -30,7 +31,7 @@ async function navigate() {
     logout.addEventListener('click', () => { clearDemoUser(); navigate(); });
     root.querySelector('.top-actions').prepend(logout);
   }
-  document.getElementById('session-label').textContent = demoUser().name + ' (mẫu)';
+  document.getElementById('session-label').textContent = demoUser().name + ' · ' + ({user:'User',librarian:'Nhân viên thư viện',admin:'Admin'})[demoUser().role];
   const container = document.getElementById('app-content');
   let path = location.hash.slice(1) || '/';
   if (path.startsWith('/week1/')) { path = path.replace('/week1/', '/'); history.replaceState(null, '', '#' + path); }

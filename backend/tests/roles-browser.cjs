@@ -4,7 +4,7 @@ const {chromium}=require('playwright');const assert=require('node:assert/strict'
  const page=await browser.newPage();await page.goto(process.env.TEST_URL||'http://127.0.0.1:8080');
  await page.locator('[name="username"]').fill(role);await page.locator('[name="password"]').fill('123456');await page.getByRole('button',{name:'Đăng nhập →',exact:true}).click();
  await page.getByRole('heading',{name:'Chào mừng đến UniLib',exact:true}).waitFor();
- await page.getByRole('link',{name:'Tài khoản / nhân viên',exact:true}).click();
+ await page.getByRole('link',{name:role==='admin'?'Tài khoản / nhân viên':'Tài khoản của tôi',exact:true}).click();
  await page.locator('#app-content h1').waitFor();
  if(role==='admin'){
  await page.getByRole('button',{name:'+ Thêm tài khoản',exact:true}).click();
