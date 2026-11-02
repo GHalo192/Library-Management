@@ -8,13 +8,16 @@ const path = require('node:path');
     const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
     const errors = []; page.on('pageerror', error => errors.push(error.message));
     await page.goto(process.env.TEST_URL || 'http://127.0.0.1:18080/');
+    if (await page.locator('#login-form').count()) { await page.locator('[name="username"]').fill('admin'); await page.locator('[name="password"]').fill('123456'); await page.getByRole('button', {name:'Đăng nhập →',exact:true}).click(); }
     await page.getByText('Cơ sở dữ liệu: đã kết nối', { exact: true }).waitFor();
     await page.screenshot({ path: path.join(__dirname, '../storage/week1-desktop.png'), fullPage: true });
     await page.getByRole('button', { name: 'Kiểm tra lại' }).click();
+    if (await page.locator('#login-form').count()) { await page.locator('[name="username"]').fill('admin'); await page.locator('[name="password"]').fill('123456'); await page.getByRole('button', {name:'Đăng nhập →',exact:true}).click(); }
     await page.getByText('Cơ sở dữ liệu: đã kết nối', { exact: true }).waitFor();
     await page.evaluate(() => { location.hash = '/missing'; });
     await page.getByRole('heading', { name: 'Không tìm thấy trang', exact: true }).waitFor();
     await page.getByRole('link', { name: 'Tổng quan', exact: true }).click();
+    if (await page.locator('#login-form').count()) { await page.locator('[name="username"]').fill('admin'); await page.locator('[name="password"]').fill('123456'); await page.getByRole('button', {name:'Đăng nhập →',exact:true}).click(); }
     await page.getByText('Cơ sở dữ liệu: đã kết nối', { exact: true }).waitFor();
     await page.route('**/api/health/db', route => route.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({data:null,error:{code:'DATABASE_NOT_READY',message:'DB thử chưa sẵn sàng'}}) }));
     await page.getByRole('button', { name: 'Kiểm tra lại' }).click();

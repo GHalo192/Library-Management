@@ -6,14 +6,36 @@ import { mount as mountHome } from './shared/home.js';
 import { routes as bookRoutes } from './books/routes.js';
 import { routes as ebookRoutes } from './ebooks/routes.js';
 import { routes as weekOneRoutes } from './week1/routes.js';
+import { mountLogin } from './accounts/login.js';
+import { demoUser, clearDemoUser } from './accounts/demo-store.js';
 const routes = [{ path: '/', title: 'Tổng quan', icon: '◫', mount: mountHome }, ...bookRoutes, ...ebookRoutes, ...weekOneRoutes];
-mountLayout(document.getElementById('app'));
-let activeController, cleanup;
+const root = document.getElementById('app');
+let activeController, cleanup, shellMounted = false;
 async function navigate() {
   activeController?.abort(); cleanup?.(); cleanup = null;
   const controller = new AbortController(); activeController = controller;
+  if (!demoUser()) {
+    shellMounted = false;
+    root.className = 'login-page';
+    document.title = 'Đăng nhập | UniLib';
+    history.replaceState(null, '', '#/login');
+    cleanup = mountLogin({ container: root, signal: controller.signal, onLogin: () => {
+      history.replaceState(null, '', '#/'); navigate();
+    } });
+    return;
+  }
+  if (!shellMounted) {
+    root.className = '';
+    mountLayout(root); shellMounted = true;
+    const logout = document.createElement('button');
+    logout.className = 'btn outline'; logout.textContent = 'Đăng xuất';
+    logout.addEventListener('click', () => { clearDemoUser(); navigate(); });
+    root.querySelector('.top-actions').prepend(logout);
+  }
+  document.getElementById('session-label').textContent = demoUser().name + ' (mẫu)';
   const container = document.getElementById('app-content');
-  const path = location.hash.slice(1) || '/';
+  let path = location.hash.slice(1) || '/';
+  if (path === '/login') { path = '/'; history.replaceState(null, '', '#/'); }
   let params = {}, selected;
   for (const route of routes) {
     const expected = route.path.split('/'), actual = path.split('/');
@@ -33,8 +55,8 @@ async function navigate() {
   } catch (error) { if (!controller.signal.aborted) showState(container, error.message, 'status-error'); }
 }
 window.addEventListener('hashchange', navigate);
-window.addEventListener('session-expired', () => { document.getElementById('session-label').textContent = 'Khách'; toast('Phiên đã hết hạn. Vui lòng đăng nhập lại.'); navigate(); });
-const labels = { student: 'Sinh viên', librarian: 'Thủ thư', staff: 'Nhân viên', admin: 'Quản lý' };
-try { const user = await refreshSession(); document.getElementById('session-label').textContent = user ? labels[user.vai_tro] : 'Khách'; }
-catch { toast('Chưa kết nối được phiên máy chủ.'); }
+window.addEventListener('demo-logout', navigate);
+window.addEventListener('session-expired', () => { clearDemoUser(); toast('Phiên đã hết hạn. Vui lòng đăng nhập lại.'); navigate(); });
+// Hiển thị đăng nhập ngay; lấy phiên nền không được chặn màn hình khi API chưa sẵn sàng.
 navigate();
+refreshSession().catch(() => {});
