@@ -1,10 +1,11 @@
 # Quản lý thư viện — Tổng quan hệ thống và phân công thành viên
 
-Bản phân công cho nhóm 4 người, triển khai quản lý thư viện và tìm/đọc sách điện tử bằng HTML/CSS/JavaScript, PHP, MySQL. Repository dùng main và tv1–tv4. Đã hoàn thiện phần nền TV1 trước tuần 1 và tuần 1: khung UniLib, API nền, PDO, phiên/quyền, schema/seed và kiểm tra. Prototype vẫn dùng dữ liệu mô phỏng. Chưa phát hành B1 toàn nhóm vì còn đầu ra TV2–TV4 và các quyết định nghiệp vụ cần thống nhất. Xem mục 10 để chạy và tích hợp.
+Bản phân công cho nhóm 4 người, triển khai quản lý thư viện và tìm/đọc sách điện tử bằng HTML/CSS/JavaScript, PHP, MySQL. Repository dùng main và tv1–tv4. Đã hoàn thiện phần nền TV1 trước tuần 1 và tuần 1: khung UniLib, API nền, PDO, phiên/quyền, schema/seed và kiểm tra. Prototype vẫn dùng dữ liệu mô phỏng. Đã nhận và tích hợp đầu ra tuần 1 TV2–TV4; chính sách được chốt trong CHINH_SACH_B1.md. B1 toàn nhóm đã qua kiểm tra theo README_B1.md. Xem mục 10 để chạy và tích hợp.
 
-README có nội dung: **hệ thống có những phần nào, ai chịu trách nhiệm frontend/backend/file chung và phải bàn giao chức năng gì**. Lịch và đầu việc theo thời gian chỉ ghi trong [kế hoạch triển khai](../ITTV-LibraryManagement-docs/KE_HOACH_THEO_TUAN.md); không dùng README làm lịch giao việc hằng tuần.
+> **B1 đã tích hợp và kiểm thử ngày 02/11/2026.** Chạy `.\START_B1.ps1 -OpenBrowser` để xem bản chung. Xem [README_B1.md](README_B1.md) cho cách thử/kết quả, [CHINH_SACH_B1.md](CHINH_SACH_B1.md) cho quyết định nghiệp vụ đã chốt. Các phần ghi trạng thái trước 02/11 phía dưới là lịch sử bàn giao; không dùng các câu “chưa merge/chưa chốt” cũ để ghi đè trạng thái B1 này.
+README có nội dung: **hệ thống có những phần nào, ai chịu trách nhiệm frontend/backend/file chung và phải bàn giao chức năng gì**. Lịch và đầu việc theo thời gian chỉ ghi trong [kế hoạch triển khai](docs/KE_HOACH_THEO_TUAN.md); không dùng README làm lịch giao việc hằng tuần.
 
-Yêu cầu được cập nhật ngày 21/10/2026 từ báo cáo UML và tài liệu business rule người dùng cung cấp. [Đặc tả nghiệp vụ](../ITTV-LibraryManagement-docs/DAC_TA_NGHIEP_VU.md) ghi đầy đủ 42 use case, 25 business rule, quyền theo actor, tiêu chí nghiệm thu và các điểm còn cần chốt. Đặc tả nghiệp vụ giữ nguyên; trạng thái triển khai TV1 được cập nhật ngày 23/10/2026 ở mục 10. Giữ phân công 4 thành viên hiện tại, không thay bằng danh sách thành viên trong báo cáo nguồn.
+Yêu cầu được cập nhật ngày 21/10/2026 từ báo cáo UML và tài liệu business rule người dùng cung cấp. [Đặc tả nghiệp vụ](docs/DAC_TA_NGHIEP_VU.md) ghi đầy đủ 42 use case, 25 business rule, quyền theo actor, tiêu chí nghiệm thu và các điểm còn cần chốt. Đặc tả nghiệp vụ giữ nguyên; trạng thái triển khai TV1 được cập nhật ngày 23/10/2026 ở mục 10. Giữ phân công 4 thành viên hiện tại, không thay bằng danh sách thành viên trong báo cáo nguồn.
 
 ## 1. Nguyên tắc làm việc
 

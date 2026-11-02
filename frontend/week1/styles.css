@@ -1,0 +1,15 @@
+/* Chỉ áp dụng cho nội dung mẫu B1 trong shell, không thay CSS prototype. */
+#app-content nav { display: flex; flex-wrap: wrap; gap: 8px; }
+#app-content .panel { margin-top: 20px; }
+#app-content input, #app-content select { max-width: 100%; }
+#app-content .login-wrap { min-height: 0; display: block; margin-top: 20px; }
+#app-content .login-art { display: none; }
+#app-content .login-form { padding: 20px; }
+#app-content dialog.modal-backdrop { position: fixed; max-height: 85vh; overflow: auto; width: min(600px, 95vw); }
+#app-content dialog:not([open]) { display: none; }
+@media (max-width: 600px) {
+  #app-content .login-form { padding: 8px; }
+  .topbar .crumb { flex: 1; min-width: 0; }
+  .topbar .top-actions { flex-shrink: 0; }
+  .topbar .top-actions .muted { display: none; }
+}

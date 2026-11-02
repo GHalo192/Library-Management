@@ -1,3 +1,4 @@
+> **Cập nhật tích hợp 02/11/2026:** phần tuần 1 đã được gộp vào bản chung B1 và kiểm tra trên PHP/DB thật. Các chính sách/hợp đồng còn chờ trong ghi chép lịch sử dưới đây nay theo [CHINH_SACH_B1](CHINH_SACH_B1.md); trạng thái nghiệm thu/cách chạy theo [README_B1](README_B1.md). Tuần 2 trở đi vẫn chưa thực hiện.
 # TV2 — Nhật ký bàn giao theo tuần
 
 Ngày 01/11/2026 được tính là **tuần 1** theo yêu cầu. Bản đầu vào lấy từ origin/tv2 tại `559e64967aec252f8c05c7f5555c47354ecb9bca`, trong thư mục làm việc riêng tv2. Tài liệu này bổ sung README chính, không thay kế hoạch hoặc đặc tả nghiệp vụ.

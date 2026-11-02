@@ -40,6 +40,6 @@ try {
     rejects($pdo, "UPDATE the_doc_gia SET ngay_het_han = '2020-01-01' WHERE doc_gia_id = 1");
     rejects($pdo, "UPDATE ban_sach SET tinh_trang = 'borrowed', dang_luu_hanh = 0 WHERE ban_sach_id = 1");
     check((int)$pdo->query("SELECT COUNT(*) FROM ban_sach WHERE tinh_trang = 'available' AND dang_luu_hanh = 1")->fetchColumn() === 2, 'Tồn khả dụng');
-    check($pdo->query("SELECT gia_tri FROM cau_hinh WHERE khoa = 'damage_surcharge'")->fetchColumn() === null, 'Không tự chốt phụ phí');
+    check($pdo->query("SELECT gia_tri FROM cau_hinh WHERE khoa = 'damage_surcharge'")->fetchColumn() === '0', 'Chính sách B1: phụ phí bằng 0');
 } finally { $pdo->rollBack(); Auth::logout(); }
 echo "PASS: $checks checks\n";

@@ -5,7 +5,8 @@ import { showState, toast } from './shared/ui.js';
 import { mount as mountHome } from './shared/home.js';
 import { routes as bookRoutes } from './books/routes.js';
 import { routes as ebookRoutes } from './ebooks/routes.js';
-const routes = [{ path: '/', title: 'Tổng quan', icon: '◫', mount: mountHome }, ...bookRoutes, ...ebookRoutes];
+import { routes as weekOneRoutes } from './week1/routes.js';
+const routes = [{ path: '/', title: 'Tổng quan', icon: '◫', mount: mountHome }, ...bookRoutes, ...ebookRoutes, ...weekOneRoutes];
 mountLayout(document.getElementById('app'));
 let activeController, cleanup;
 async function navigate() {
