@@ -2,9 +2,10 @@ import { createStore, requestBorrow, review, handover, confirmFine } from './mod
 const store = createStore();
 const labels = { pending:'Chờ duyệt', approved:'Đã duyệt', rejected:'Từ chối', issued:'Đã bàn giao', confirmed:'Đã xác nhận' };
 export function mount({container, signal}, finesOnly = false) {
+  if (signal?.aborted) return () => {};
   const events = new AbortController(); signal?.addEventListener('abort', () => events.abort(), {once:true});
   const draw = () => {
-    if (signal?.aborted) return;
+    if (events.signal.aborted) return;
     container.innerHTML = `<h1>${finesOnly ? 'Khoản phạt' : 'Yêu cầu, duyệt và bàn giao'}</h1><p>TV3 tuần 1 • Mô phỏng dữ liệu trong bộ nhớ. Ngày giao mẫu: 01/11/2026. Không tạo giao dịch thật.</p><p role="status"></p>
       ${finesOnly ? '' : `<section class="panel"><h2>Gửi yêu cầu</h2><form data-form="request" novalidate><label class="field">Mã độc giả<input class="input" name="reader" type="number" value="1"></label><label class="field">Thẻ mẫu<select class="select" name="card"><option value="valid">Có hiệu lực</option><option value="invalid">Khóa / hết hạn</option></select></label><fieldset><legend>Chọn tối đa 3 bản sách</legend>${store.copies.map(c=>`<label style="display:block"><input type="checkbox" name="copy" value="${c.id}"> ${c.title} — ${c.available?'Còn':'Đã cho mượn'}</label>`).join('')}</fieldset><button class="btn">Gửi yêu cầu</button></form></section>
       <section class="panel"><h2>Xử lý yêu cầu</h2><label>Hạn mượn (ngày) <input class="input" id="days" type="number" min="1" max="14" value="14"></label><label><input type="checkbox" id="valid-card" checked> Thẻ còn hiệu lực lúc giao</label><div class="table-wrap"><table><thead><tr><th>Yêu cầu / độc giả</th><th>Bản sách</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody>${store.requests.map(r=>`<tr><td>${r.id} / ${r.readerId}</td><td>${r.copyIds.join(', ')}</td><td>${labels[r.status]}</td><td>${r.status==='pending'?`<button class="btn" data-act="approve" data-id="${r.id}">Duyệt</button><button class="btn outline" data-act="reject" data-id="${r.id}">Từ chối</button>`:r.status==='approved'?`<button class="btn" data-act="handover" data-id="${r.id}">Bàn giao</button>`:'—'}</td></tr>`).join('')||'<tr><td colspan="4">Chưa có yêu cầu.</td></tr>'}</tbody></table></div></section>

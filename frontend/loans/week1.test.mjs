@@ -14,3 +14,11 @@ assert.throws(()=>handover(limit,1,14));assert.equal(limit.copies.filter(c=>c.av
 const reject=createStore();requestBorrow(reject,1,[1]);review(reject,1,false);assert.throws(()=>handover(reject,1,14));
 confirmFine(s,1);assert.throws(()=>confirmFine(s,1));
 console.log('PASS TV3: limits, invalid card, approval without stock change, handover, duplicate/conflicting handover, rejection and fine confirmation.');
+const invalid = createStore();
+for (const copies of [null, '1', [1, 1], [1.5], ['bad']]) assert.throws(() => requestBorrow(invalid, 1, copies));
+assert.throws(() => requestBorrow(invalid, 1, [1], 'false'));
+assert.equal(invalid.requests.length, 0);
+requestBorrow(invalid, 1, [1]);
+assert.throws(() => review(invalid, 1, 'false'));assert.equal(invalid.requests[0].status, 'pending');
+review(invalid, 1, true);assert.throws(() => handover(invalid, 1, 14, 'false'));assert.equal(invalid.loans.length, 0);
+console.log('PASS review TV3: malformed/duplicate copies and non-boolean decisions are rejected atomically.');

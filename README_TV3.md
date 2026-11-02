@@ -44,6 +44,15 @@ Envelope data/error; 401/403 phiên/quyền, 404 không tồn tại, 409 trạng
 
 Đề xuất để nhóm duyệt: múi giờ Asia/Ho_Chi_Minh; ngày mượn/hạn trả theo ngày lịch, quá hạn tính từ ngày kế tiếp hạn trả. Bộ tính tuần 2 nhận ngày và chính sách tường minh, không lấy timezone máy. Phụ phí mất/hỏng, nguồn giá sách và việc cộng phạt quá hạn chưa có quyết định; không tự đặt 50.000/100.000đ. Gia hạn theo từng bản và cộng từ hạn cũ là đề xuất, cần chốt trước B3. Thiếu chính sách thì không nghiệm thu nhánh tính phụ thuộc chính sách đó.
 
+## Kiểm tra chéo và sửa tiếp — 02/11/2026, vẫn thuộc tuần 1
+
+- Đã rà soát mã và chạy lại ca kiểm tra thay nhóm theo yêu cầu người dùng.
+- Từ chối danh sách bản sách sai kiểu, mã sai hoặc trùng; không âm thầm gộp các bản trùng rồi nhận yêu cầu.
+- Quyết định duyệt phải là boolean; chuỗi "false" không còn bị hiểu là duyệt. Hiệu lực thẻ phải là true tường minh ở cả yêu cầu và bàn giao.
+- Không mount/render sau khi hủy; khi rời loans rồi quay lại, thao tác gửi chỉ tạo một yêu cầu.
+- PASS test dữ liệu và Edge desktop/mobile; PASS chuyển loans → fines → loans với router nền, không lặp handler.
+- Session/health ở môi trường thử router là fixture; chưa phải kiểm tra transaction hoặc concurrency DB thật, chưa merge main. Các chính sách bộ tính tuần 2 vẫn cần chốt.
+
 ## Tuần 2 — chưa thực hiện
 
 Bộ tính phạt độc lập và màn hình xem trước; kiểm tra đúng hạn, 2 × 3 × 2.000 = 12.000 và ngày biên. Không tạo phiếu/thu tiền thật, không gọi API sách/thẻ đang viết cùng tuần.
