@@ -1,4 +1,4 @@
-import { renderAuth, registerAccount, authenticateAccount } from './auth.js';
+import { renderAuth, registerAccount, authenticateAccount } from './auth.js?v=registration-2';
 import { demoDb, setDemoUser } from './demo-store.js';
 
 export function mountLogin({ container, signal, onLogin }) {

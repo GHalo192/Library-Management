@@ -10,6 +10,16 @@ if (preg_match('~^/(prototype|books|ebooks)(/|$)~', $path)
     http_response_code(404); echo 'Không tìm thấy trang.'; return true;
 }
 $root = realpath(__DIR__ . '/../frontend'); $file = realpath($root . $path);
-if ($file !== false && str_starts_with($file, $root . DIRECTORY_SEPARATOR) && is_file($file)) return false;
+if ($file !== false && str_starts_with($file, $root . DIRECTORY_SEPARATOR) && is_file($file)) {
+    $types = ['js' => 'application/javascript', 'css' => 'text/css', 'html' => 'text/html'];
+    $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+    if (isset($types[$extension])) {
+        header('Cache-Control: no-store');
+        header('Content-Type: ' . $types[$extension] . '; charset=utf-8');
+        readfile($file); return true;
+    }
+    return false;
+}
+header('Cache-Control: no-store');
 if ($path === '/') { require $root . '/index.html'; return true; }
 http_response_code(404); echo 'Không tìm thấy trang.'; return true;

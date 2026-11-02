@@ -4,7 +4,7 @@ import { refreshSession, canAccess } from './shared/session.js';
 import { showState, toast } from './shared/ui.js';
 import { mount as mountHome } from './shared/home.js';
 import { routes as appRoutes } from './shared/app-routes.js';
-import { mountLogin } from './accounts/login.js';
+import { mountLogin } from './accounts/login.js?v=registration-2';
 import { demoUser, clearDemoUser } from './accounts/demo-store.js';
 const routes = [{ path: '/', title: 'Tổng quan', icon: '◫', mount: mountHome }, ...appRoutes];
 const root = document.getElementById('app');

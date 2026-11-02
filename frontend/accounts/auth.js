@@ -101,10 +101,16 @@ export function validateRegistration(input, accounts) {
 }
 
 async function passwordHash(salt, password) {
-  const bytes = await crypto.subtle.digest(
-    "SHA-256",
-    encoder.encode(`${salt}:${password}`),
-  );
+  let timeout;
+  let bytes;
+  try {
+    bytes = await Promise.race([
+      crypto.subtle.digest("SHA-256", encoder.encode(`${salt}:${password}`)),
+      new Promise((_, reject) => {
+        timeout = setTimeout(() => reject(new Error("Xử lý mật khẩu quá lâu. Vui lòng thử lại hoặc mở trang bằng Microsoft Edge/Chrome.")), 10000);
+      }),
+    ]);
+  } finally { clearTimeout(timeout); }
   return Array.from(new Uint8Array(bytes), (byte) =>
     byte.toString(16).padStart(2, "0"),
   ).join("");
