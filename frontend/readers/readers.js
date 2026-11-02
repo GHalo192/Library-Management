@@ -2,11 +2,12 @@ import { createStore, saveReader, saveCard, cardState } from './model.js';
 const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const store = createStore();
 export function mount({ container, signal }) {
+  if (signal?.aborted) return () => {};
   const events = new AbortController();
   signal?.addEventListener('abort', () => events.abort(), { once: true });
   let query = '', selected = null, message = '';
   function render() {
-    if (signal?.aborted) return;
+    if (events.signal.aborted) return;
     const reader = store.readers.find(r => r.id === selected);
     const rows = store.readers.filter(r => `${r.name} ${r.accountId}`.toLowerCase().includes(query.toLowerCase()));
     const field = (label, name, value = '', type = 'text') => `<label class="field">${label}<input class="input" type="${type}" name="${name}" value="${esc(value)}"></label>`;

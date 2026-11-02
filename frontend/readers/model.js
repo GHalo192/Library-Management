@@ -5,6 +5,7 @@ export function createStore() {
 const required = (value) => String(value ?? '').trim();
 export function saveReader(store, input) {
   const id = Number(input.id || 0), accountId = Number(input.accountId), name = required(input.name);
+  if (!Number.isSafeInteger(id) || id < 0 || (required(input.id) && id === 0)) throw Error('Mã hồ sơ cần sửa không hợp lệ.');
   if (!Number.isSafeInteger(accountId) || accountId < 1 || !name || name.length > 150) throw Error('Nhập mã tài khoản hợp lệ và họ tên (tối đa 150 ký tự).');
   const phone = required(input.phone), address = required(input.address);
   if (phone && !/^(0\d{9}|\+84\d{9})$/.test(phone)) throw Error('Số điện thoại không hợp lệ.');

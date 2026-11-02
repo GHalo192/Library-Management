@@ -40,6 +40,14 @@ Tuần 2 backend phải kiểm tra tài khoản tồn tại, quyền/chủ sở 
 
 Dùng envelope data/error của README, CSRF cho ghi; 401/403 khi sai phiên/quyền, 404 không tồn tại, 409 trùng tài khoản/thẻ, 422 dữ liệu sai. Không trả lịch sử giao dịch tự viết: TV3 cung cấp ở B4, TV2 dùng ở tuần 5. Ví dụ POST `{ "tai_khoan_id": 4, "ho_ten": "Nguyễn An" }` → 201 `{ "data": { "doc_gia_id": 2 }, "error": null }`. Đây là đề xuất, cần TV1 chốt trước làm hợp đồng nền.
 
+## Kiểm tra chéo và sửa tiếp — 02/11/2026, vẫn thuộc tuần 1
+
+- Đã rà soát mã và chạy lại ca kiểm tra thay nhóm theo yêu cầu người dùng.
+- Sửa lỗi mã hồ sơ cập nhật sai (NaN, âm, thập phân hoặc 0 nhập tường minh) có thể bị hiểu thành tạo mới. Giờ từ chối trước khi đổi dữ liệu; test xác nhận store giữ nguyên.
+- Không mount màn hình khi signal đã hủy; render cũng dừng sau cleanup.
+- PASS test dữ liệu, thao tác Edge desktop/mobile; PASS gắn thử route readers với router nền thật ở môi trường kiểm tra cục bộ.
+- Phần session/health của môi trường thử router là fixture; chưa kiểm thử backend/DB và chưa merge main. Không coi kết quả này là xác nhận chính sách thẻ.
+
 ## Tuần 2 — chưa thực hiện
 
 Nối readers với API/PDO của chính TV2, kiểm tra quyền/chủ sở hữu và thẻ bằng schema nền. Chỉ bắt đầu phần phụ thuộc khi B1 chung được chốt; không gọi AccountService TV4 đang viết cùng tuần.

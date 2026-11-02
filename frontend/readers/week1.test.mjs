@@ -16,3 +16,7 @@ saveCard(s,2,{code:'THE002',issued:'2026-11-01',expires:'2027-01-01',status:'loc
 assert.equal(cardState(s.readers[1].card,'2026-11-01'),'Đã khóa');
 assert.throws(()=>saveCard(s,2,{code:'THE002',issued:'2026-11-01',expires:'2026-12-01',status:'active'}));
 console.log('PASS TV2: required, duplicate account/card, edit, dates, expiry, renewal and lock.');
+const before = structuredClone(s);
+for (const id of ['bad-id', '0', -1, 1.5]) assert.throws(() => saveReader(s, { id, accountId: 99, name: 'Không được tạo nhầm' }));
+assert.deepEqual(s, before);
+console.log('PASS review TV2: invalid edit IDs do not create or mutate readers.');
