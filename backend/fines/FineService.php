@@ -98,54 +98,6 @@ class FineService
         return $totalFine;
     }
 
-
-
-// main_fine_calc(borrow_id, calculation_date):
-//     total_fine = 0
-//     for item in borrow_id.borrow_items:
-
-//         if item.status == "RETURNED":
-//             fine = late_fine_calc(
-//                 item.due_date,
-//                 item.return_date
-//             )
-
-//         elif item.status == "LOST":
-//             late_fine = late_fine_calc(
-//                 item.due_date,
-//                 item.confirmation_date
-//             )
-
-//             compensation = lost_fine_calc(item.id)
-
-//             fine = late_fine + compensation
-
-//         elif item.status == "DAMAGED":
-//             late_fine = late_fine_calc(
-//                 item.due_date,
-//                 item.confirmation_date
-//             )
-
-//             compensation = damaged_fine_calc(
-//                 item.repair_cost,
-//                 item.price
-//             )
-
-//             fine = late_fine + compensation
-
-//         elif item.status == "BORROWED":
-//             fine = late_fine_calc(
-//                 item.due_date,
-//                 calculation_date
-//             )
-
-//         total_fine += fine
-
-//     return total_fine
-
-
-
-
 }
 
 
