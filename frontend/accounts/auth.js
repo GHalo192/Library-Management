@@ -1,4 +1,3 @@
-// Xác thực mẫu cho B1. Backend phải tự xác thực lại khi được tích hợp.
 const DEMO_PASSWORD = "123456";
 const encoder = new TextEncoder();
 
@@ -10,7 +9,7 @@ const phoneKey = (value) => clean(value).replace(/\D/g, "").replace(/^84/, "0");
 export function renderAuth(view = "login") {
   const registering = view === "register";
   const form = registering
-    ? `<div class="eyebrow">TẠO TÀI KHOẢN SINH VIÊN</div>
+    ? `<div class="eyebrow">TẠO TÀI KHOẢN USER</div>
        <h2>Đăng ký UniLib</h2>
        <p class="sub">Tạo tài khoản để sử dụng thư viện điện tử.</p>
        <form id="register-form" novalidate>
@@ -37,22 +36,22 @@ export function renderAuth(view = "login") {
          <button class="btn auth-submit" type="submit">Tạo tài khoản</button>
        </form>
        <p class="auth-switch">Đã có tài khoản? <a href="#login" data-action="show-login">Đăng nhập</a></p>
-       <p class="auth-note">Bản demo chỉ tạo tài khoản sinh viên; hồ sơ độc giả được bổ sung ở module riêng.</p>`
+       <p class="auth-note">Tài khoản đăng ký mới thuộc loại User.</p>`
     : `<div class="eyebrow">WELCOME BACK</div>
        <h2>Đăng nhập UniLib</h2>
        <p class="sub">Truy cập không gian học tập của bạn</p>
        <form id="login-form" novalidate>
          <p class="auth-error" role="alert" hidden></p>
          <label class="field">Tên đăng nhập
-           <input class="input" name="username" autocomplete="username" required placeholder="Email hoặc MSSV (demo cũ: student/admin)">
+           <input class="input" name="username" autocomplete="username" required placeholder="Email, MSSV hoặc tên đăng nhập">
          </label>
          <label class="field">Mật khẩu
            <input class="input" type="password" name="password" autocomplete="current-password" required placeholder="Nhập mật khẩu">
          </label>
          <button class="btn auth-submit" type="submit">Đăng nhập →</button>
        </form>
-       <p class="auth-switch">Chưa có tài khoản sinh viên? <a href="#register" data-action="show-register">Đăng ký</a></p>
-       <p class="demo">Tài khoản demo: <b>student, librarian, staff, admin</b><br>Mật khẩu: <b>123456</b><br>⚠️ Chỉ là đăng nhập mô phỏng trên trình duyệt.</p>`;
+       <p class="auth-switch">Chưa có tài khoản? <a href="#register" data-action="show-register">Đăng ký</a></p>
+       <p class="demo">Tài khoản chạy thử: <b>user, librarian, admin</b><br>Mật khẩu: <b>123456</b><br>Dữ liệu chạy thử được đặt lại khi tải lại trang.</p>`;
 
   return `<div class="login-wrap">
     <div class="login-art"><div>
@@ -102,10 +101,16 @@ export function validateRegistration(input, accounts) {
 }
 
 async function passwordHash(salt, password) {
-  const bytes = await crypto.subtle.digest(
-    "SHA-256",
-    encoder.encode(`${salt}:${password}`),
-  );
+  let timeout;
+  let bytes;
+  try {
+    bytes = await Promise.race([
+      crypto.subtle.digest("SHA-256", encoder.encode(`${salt}:${password}`)),
+      new Promise((_, reject) => {
+        timeout = setTimeout(() => reject(new Error("Xử lý mật khẩu quá lâu. Vui lòng thử lại hoặc mở trang bằng Microsoft Edge/Chrome.")), 10000);
+      }),
+    ]);
+  } finally { clearTimeout(timeout); }
   return Array.from(new Uint8Array(bytes), (byte) =>
     byte.toString(16).padStart(2, "0"),
   ).join("");
@@ -137,7 +142,7 @@ export async function registerAccount(db, input, signal) {
     name: clean(input.name),
     email: clean(input.email),
     phone: clean(input.phone),
-    role: "student",
+    role: 'user',
     status: "Hoạt động",
     credential,
   };
@@ -163,7 +168,7 @@ export async function authenticateAccount(db, username, password) {
     return hash === account.credential.hash ? account : null;
   }
   // Bốn tài khoản mẫu ban đầu vẫn dùng mật khẩu chung trong bản demo.
-  return ["student", "librarian", "staff", "admin"].includes(account.id) &&
+  return ['user', 'librarian', 'admin'].includes(account.id) &&
     password === DEMO_PASSWORD
     ? account
     : null;

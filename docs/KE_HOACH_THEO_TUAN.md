@@ -1,3 +1,5 @@
+> **Cập nhật vai trò 02/11/2026:** hệ thống dùng 3 loại: User (`user`), Nhân viên thư viện (`librarian`), Admin (`admin`). Gộp Thủ thư/Nhân viên vào Nhân viên thư viện; tài khoản tự đăng ký luôn là User. Quy định này thay thế các đoạn nói về 4 vai trò trong tài liệu lịch sử bên dưới.
+
 > Cập nhật nghiệm thu ngày 02/11/2026: B1 toàn nhóm đã tích hợp TV2–TV4, chốt chính sách và kiểm thử trên PHP/MariaDB thật; xem [README_B1](../README_B1.md) và [chính sách B1](../CHINH_SACH_B1.md). Có thể bắt đầu tuần 2 từ main đã kiểm tra. Các mốc “chưa phát hành B1” trong ghi chép ngày 23/10 bên dưới là trạng thái lịch sử đã được thay thế. Tuần 2–6 vẫn chưa triển khai.
 # Kế hoạch theo tuần — Làm độc lập theo bản nền tuần trước
 

@@ -28,13 +28,13 @@ $pdo->beginTransaction();
 try {
     $pdo->exec("UPDATE tai_khoan SET trang_thai = 'active' WHERE tai_khoan_id = 1");
     $before = session_id(); Auth::login(1); check(session_id() !== $before, 'Không xoay session id');
-    check(Auth::requireRoles($pdo, ['student'])['tai_khoan_id'] == 1, 'Quyền student');
+    check(Auth::requireRoles($pdo, ['user'])['tai_khoan_id'] == 1, 'Quyền student');
     expectError(fn() => Auth::requireRoles($pdo, ['admin']), 'FORBIDDEN');
     $pdo->exec("UPDATE tai_khoan SET trang_thai = 'locked' WHERE tai_khoan_id = 1");
     expectError(fn() => Auth::requireRoles($pdo), 'SESSION_EXPIRED');
     check(Auth::user($pdo) === null, 'Phiên khóa phải bị xóa');
-    rejects($pdo, "INSERT INTO tai_khoan(email,mssv,mat_khau_hash,vai_tro) VALUES ('student@example.test','OTHER','x','student')");
-    rejects($pdo, "INSERT INTO tai_khoan(email,mssv,mat_khau_hash,vai_tro) VALUES ('other@example.test','SV001','x','student')");
+    rejects($pdo, "INSERT INTO tai_khoan(email,mssv,mat_khau_hash,vai_tro) VALUES ('student@example.test','OTHER','x','user')");
+    rejects($pdo, "INSERT INTO tai_khoan(email,mssv,mat_khau_hash,vai_tro) VALUES ('other@example.test','SV001','x','user')");
     rejects($pdo, "INSERT INTO ban_sach(ma_ban_sach,sach_id,the_loai_id,vi_tri_id) VALUES ('S001-01',1,1,1)");
     rejects($pdo, "INSERT INTO ban_sach(ma_ban_sach,sach_id,the_loai_id,vi_tri_id) VALUES ('WRONG-LOCATION',1,1,2)");
     rejects($pdo, "UPDATE the_doc_gia SET ngay_het_han = '2020-01-01' WHERE doc_gia_id = 1");

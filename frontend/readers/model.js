@@ -1,4 +1,3 @@
-// TV2 — tuần 1: dữ liệu thử trong bộ nhớ; không thay API/DB tuần 2.
 export function createStore() {
   return { readers: [{ id: 1, accountId: 3, name: 'Nguyễn An', phone: '0912345678', address: 'Hà Nội', card: { code: 'THE001', issued: '2026-10-01', expires: '2026-12-31', status: 'active' } }], nextId: 2 };
 }

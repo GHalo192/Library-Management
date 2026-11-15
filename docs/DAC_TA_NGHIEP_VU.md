@@ -1,3 +1,5 @@
+> **Cập nhật vai trò 02/11/2026:** hệ thống dùng 3 loại: User (`user`), Nhân viên thư viện (`librarian`), Admin (`admin`). Gộp Thủ thư/Nhân viên vào Nhân viên thư viện; tài khoản tự đăng ký luôn là User. Quy định này thay thế các đoạn nói về 4 vai trò trong tài liệu lịch sử bên dưới.
+
 > Các điểm mở ở mục 5 đã được chốt ngày 02/11/2026 theo ủy quyền của người dùng tại [CHINH_SACH_B1](../CHINH_SACH_B1.md). Bảng cũ được giữ để truy vết câu hỏi nguồn; không còn là danh sách chặn B1. Quyết định mới là lựa chọn triển khai của đồ án, không gán ngược thành yêu cầu từ nguồn cũ.
 # Đặc tả nghiệp vụ hệ thống quản lý thư viện
 

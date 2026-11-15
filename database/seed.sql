@@ -4,9 +4,9 @@
 SET NAMES utf8mb4;
 START TRANSACTION;
 INSERT INTO tai_khoan (tai_khoan_id,email,mssv,mat_khau_hash,vai_tro,trang_thai) VALUES
-(1,'student@example.test','SV001','!fixture-disabled','student','active'),
+(1,'student@example.test','SV001','!fixture-disabled','user','active'),
 (2,'librarian@example.test',NULL,'!fixture-disabled','librarian','active'),
-(3,'staff@example.test',NULL,'!fixture-disabled','staff','active'),
+(3,'staff@example.test',NULL,'!fixture-disabled','librarian','active'),
 (4,'admin@example.test',NULL,'!fixture-disabled','admin','active');
 INSERT INTO nhan_vien (tai_khoan_id,ma_nhan_vien,ho_ten) VALUES (2,'NV001','Thủ thư mẫu'),(3,'NV002','Nhân viên mẫu'),(4,'NV003','Quản lý mẫu');
 INSERT INTO doc_gia (doc_gia_id,tai_khoan_id,ho_ten) VALUES (1,1,'Sinh viên mẫu');
